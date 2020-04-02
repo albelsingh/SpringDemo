@@ -10,12 +10,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 
 public class DrawingApp {
-	
-/*	@Bean(name = "myCustomBeanName")
-    public static Triangle getMyBeanName() 
-	{
-        return new Triangle();
-    }*/
+
 
 	public static void main(String[] args) { 
 		//Resource r=new ClassPathResource("resource/spring.xml");
