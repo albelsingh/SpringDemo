@@ -21,6 +21,7 @@ public class DrawingApp {
 		//Resource r=new ClassPathResource("resource/spring.xml");
         //BeanFactory factory=new XmlBeanFactory(r);
 		
+		
 		ApplicationContext context = new ClassPathXmlApplicationContext("resource/spring.xml"); //Itializing application context or start container.
     	Triangle  triangle =(Triangle)context.getBean("triangle");
 		triangle.draw();
