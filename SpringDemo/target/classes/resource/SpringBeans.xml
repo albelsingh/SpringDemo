@@ -1,0 +1,59 @@
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN"
+		  "http://www.springframework.org/dtd/spring-beans-2.0.dtd">	
+
+   <beans>
+	<bean id="CustomerBean" class="com.SpringDemo.Customer">
+
+		<!-- java.util.List -->
+		<property name="lists">
+			<list>
+				
+				<!--    <ref bean="PersonBean" /> --> 
+				<bean class="com.SpringDemo.Person">
+					<property name="name" value="Albel List" />
+					<property name="address" value="BTM layout" />
+					<property name="age" value="30" />
+				</bean>
+			</list>
+		</property>
+
+		<!-- java.util.Set -->
+		<property name="sets">
+			<set>
+
+			<!-- 	<ref bean="PersonBean" />   -->
+				<bean class="com.SpringDemo.Person">
+					<property name="name" value="Murari Set" />
+					<property name="address" value="kadiyahat" />
+					<property name="age" value="31" />
+				</bean>
+			</set>
+		</property>
+
+		<!-- java.util.Map -->
+		<property name="maps">
+			<map>
+			    <entry key="1" value="Albel" /> 
+				<entry key="2" value="Murari" />
+				<entry key="3" value="Nishat" />
+					
+			</map>
+		</property>
+
+		<!-- java.util.Properties -->
+		<property name="pros">
+			<props>
+				<prop key="admin">admin@nospam.com</prop>
+				<prop key="support">support@nospam.com</prop>
+			</props>
+		</property>
+
+	</bean>
+
+	<bean id="PersonBean" class="com.SpringDemo.Person">
+		<property name="name" value="Unknown" />
+		<property name="address" value="Bangalore" />
+		<property name="age" value="33" />
+	</bean>
+
+</beans>
