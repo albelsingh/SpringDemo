@@ -883,7 +883,7 @@ Spring.xml
 
 //
 --------------------------------
-using list:
+Using list:
 point and DrawingApp class is same ablve one
 package com.SpringDemo;
 
@@ -964,3 +964,291 @@ public class Triangle
 <alias name="triangle" alias="triangle-alias"/>
 
 </beans>
+------------------------------------------------------------------------------------
+LifeCycle Callback:- 
+
+IniitializingBean interface - tells us my beans needs to know when it is initialized
+
+Example:
+Point class is same.
+
+package com.SpringDemo;
+
+import java.util.List;
+
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanNameAware;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Bean;
+
+public class Triangle implements InitializingBean,DisposableBean
+{
+
+	private Point pointA;
+	private Point pointB;
+	private Point pointC;
+	
+	public Point getPointA() {
+		return pointA;
+	}
+
+
+	public void setPointA(Point pointA) {
+		this.pointA = pointA;
+	}
+
+
+	public Point getPointB() {
+		return pointB;
+	}
+
+
+	public void setPointB(Point pointB) {
+		this.pointB = pointB;
+	}
+
+
+	public Point getPointC() {
+		return pointC;
+	}
+
+
+	public void setPointC(Point pointC) {
+		this.pointC = pointC;
+	}
+
+	public void draw() {
+		
+		System.out.println("point A = ("+ getPointA().getX()+" , "+ getPointA().getY()+")");
+		System.out.println("point B = ("+ getPointB().getX()+" , "+ getPointB().getY()+")");
+		System.out.println("point C = ("+ getPointC().getX()+" , "+ getPointC().getY()+")");
+			
+		}
+
+//This method gets call when Bean has finished initialization
+	public void afterPropertiesSet() throws Exception {
+		// TODO Auto-generated method stub
+		System.out.println("InitializingBean init method called for Triangle!!");
+	}
+
+// This method gets call before destroy the bean
+	public void destroy() throws Exception {
+		// TODO Auto-generated method stub
+		System.out.println("DisposableBean destroy method called for Triangle!!");
+	} 
+	
+
+}
+//
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN"
+		  "http://www.springframework.org/dtd/spring-beans-2.0.dtd">	
+<beans>
+
+
+<bean id="triangle" class="com.SpringDemo.Triangle">
+    <property name="pointA" ref="pointA"/>
+    <property name="pointB" ref="pointB"/>
+    <property name="pointC" ref="pointC"/>
+       
+</bean>
+
+
+   <bean id="pointA" class="com.SpringDemo.Point"> 
+         <property name="x"  value="0"></property>
+         <property name="y"  value="0"></property>
+   </bean>
+
+   <bean id="pointB" class="com.SpringDemo.Point">                              <!-- Inner Beans defination -->
+         <property name="x"  value="-20"></property>
+         <property name="y"  value="0"></property>
+   </bean>
+   
+   <bean id="pointC" class="com.SpringDemo.Point"> 
+         <property name="x"  value="20"></property>
+         <property name="y"  value="0"></property>
+   </bean>
+
+
+<alias name="triangle" alias="triangle-alias"/>
+
+</beans>
+//
+package com.SpringDemo;
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+
+public class DrawingApp {
+
+
+	public static void main(String[] args) { 
+		//Resource r=new ClassPathResource("resource/spring.xml");
+        //BeanFactory factory=new XmlBeanFactory(r);
+		//this is the adding for git version changes
+		
+		AbstractApplicationContext context = new ClassPathXmlApplicationContext("resource/spring.xml"); //Itializing application context or start container.
+		context.registerShutdownHook();
+		Triangle  triangle =(Triangle)context.getBean("triangle");
+		triangle.draw();
+		System.out.println("output = "+context.getBeanDefinitionCount());
+		
+        
+	}
+
+}
+//
+Disadvantage:
+in this approache we are implements two spring interface so we are binding our bean to spring itself.
+
+Point class is same.
+
+package com.SpringDemo;
+
+import java.util.List;
+
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanNameAware;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Bean;
+
+public class Triangle implements InitializingBean,DisposableBean
+{
+
+	private Point pointA;
+	private Point pointB;
+	private Point pointC;
+	
+	public Point getPointA() {
+		return pointA;
+	}
+
+
+	public void setPointA(Point pointA) {
+		this.pointA = pointA;
+	}
+
+
+	public Point getPointB() {
+		return pointB;
+	}
+
+
+	public void setPointB(Point pointB) {
+		this.pointB = pointB;
+	}
+
+
+	public Point getPointC() {
+		return pointC;
+	}
+
+
+	public void setPointC(Point pointC) {
+		this.pointC = pointC;
+	}
+
+	public void draw() {
+		
+		System.out.println("point A = ("+ getPointA().getX()+" , "+ getPointA().getY()+")");
+		System.out.println("point B = ("+ getPointB().getX()+" , "+ getPointB().getY()+")");
+		System.out.println("point C = ("+ getPointC().getX()+" , "+ getPointC().getY()+")");
+			
+		}
+
+//This method gets call when Bean has finished initialization
+	public void afterPropertiesSet() throws Exception {
+		// TODO Auto-generated method stub
+		System.out.println("InitializingBean init method called for Triangle!!");
+	}
+
+// This method gets call before destroy the bean
+	public void destroy() throws Exception {
+		// TODO Auto-generated method stub
+		System.out.println("DisposableBean destroy method called for Triangle!!");
+	} 
+	
+	 public void  myInit() {
+		 System.out.println("My myInit method called for Triangle!!"); 
+	 }
+     public void cleanUp(){
+	   System.out.println("My Cleanup method called for Triangle!!");
+    }
+}
+//
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN"
+		  "http://www.springframework.org/dtd/spring-beans-2.0.dtd">	
+<beans default-init-method="myInit" default-destroy-method="cleanUp">
+
+<bean id="triangle" class="com.SpringDemo.Triangle" >
+    <property name="pointA" ref="pointA"/>
+    <property name="pointB" ref="pointB"/>
+    <property name="pointC" ref="pointC"/>
+       
+</bean>
+
+
+   <bean id="pointA" class="com.SpringDemo.Point"> 
+         <property name="x"  value="0"></property>
+         <property name="y"  value="0"></property>
+   </bean>
+
+   <bean id="pointB" class="com.SpringDemo.Point">                              <!-- Inner Beans defination -->
+         <property name="x"  value="-20"></property>
+         <property name="y"  value="0"></property>
+   </bean>
+   
+   <bean id="pointC" class="com.SpringDemo.Point"> 
+         <property name="x"  value="20"></property>
+         <property name="y"  value="0"></property>
+   </bean>
+
+
+<alias name="triangle" alias="triangle-alias"/>
+
+</beans>
+//
+package com.SpringDemo;
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+
+public class DrawingApp {
+
+
+	public static void main(String[] args) { 
+		//Resource r=new ClassPathResource("resource/spring.xml");
+        //BeanFactory factory=new XmlBeanFactory(r);
+		//this is the adding for git version changes
+		
+		AbstractApplicationContext context = new ClassPathXmlApplicationContext("resource/spring.xml"); //Itializing application context or start container.
+		context.registerShutdownHook();
+		Triangle  triangle =(Triangle)context.getBean("triangle");
+		triangle.draw();
+		System.out.println("output = "+context.getBeanDefinitionCount());
+		
+        
+	}
+
+}
+Note: In above example we are using both way to initialization and clean up activity by choice you can implement anyone way.
+---------------------------------------------------------------------------------------

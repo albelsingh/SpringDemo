@@ -4,36 +4,19 @@ import java.util.List;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanNameAware;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 
-public class Triangle
+public class Triangle implements InitializingBean,DisposableBean
 {
+
+	private Point pointA;
+	private Point pointB;
+	private Point pointC;
 	
-
-	private List<Point> points;
-/*	private Point pointB;
-	private Point pointC;*/
-
-	public List<Point> getPoints() {
-		return points;
-	}
-
-	public void setPoints(List<Point> points) {
-		this.points = points;
-	}
-	
-	public void draw() {
-		
-		for(Point point: points)
-		{
-		System.out.println(" point = (" +point.getX() +"," + point.getY() + ")");
-
-		}
-		}
-
-/*	
 	public Point getPointA() {
 		return pointA;
 	}
@@ -69,7 +52,24 @@ public class Triangle
 		System.out.println("point B = ("+ getPointB().getX()+" , "+ getPointB().getY()+")");
 		System.out.println("point C = ("+ getPointC().getX()+" , "+ getPointC().getY()+")");
 			
-		} */
-	
+		}
 
+//This method gets call when Bean has finished initialization
+	public void afterPropertiesSet() throws Exception {
+		// TODO Auto-generated method stub
+		System.out.println("InitializingBean init method called for Triangle!!");
+	}
+
+// This method gets call before destroy the bean
+	public void destroy() throws Exception {
+		// TODO Auto-generated method stub
+		System.out.println("DisposableBean destroy method called for Triangle!!");
+	} 
+	
+	 public void  myInit() {
+		 System.out.println("My myInit method called for Triangle!!"); 
+	 }
+     public void cleanUp(){
+	   System.out.println("My Cleanup method called for Triangle!!");
+    }
 }

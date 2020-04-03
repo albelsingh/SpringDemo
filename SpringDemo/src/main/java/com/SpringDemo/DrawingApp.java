@@ -4,6 +4,7 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
@@ -17,8 +18,9 @@ public class DrawingApp {
         //BeanFactory factory=new XmlBeanFactory(r);
 		//this is the adding for git version changes
 		
-		ApplicationContext context = new ClassPathXmlApplicationContext("resource/spring.xml"); //Itializing application context or start container.
-    	Triangle  triangle =(Triangle)context.getBean("triangle");
+		AbstractApplicationContext context = new ClassPathXmlApplicationContext("resource/spring.xml"); //Itializing application context or start container.
+		context.registerShutdownHook();
+		Triangle  triangle =(Triangle)context.getBean("triangle");
 		triangle.draw();
 		System.out.println("output = "+context.getBeanDefinitionCount());
 		
