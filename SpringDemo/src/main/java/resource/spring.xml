@@ -1,6 +1,6 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN"
 		  "http://www.springframework.org/dtd/spring-beans-2.0.dtd">	
-<beans default-init-method="myInit" default-destroy-method="cleanUp">
+<beans >
 
 <bean id="triangle" class="com.SpringDemo.Triangle" >
     <property name="pointA" ref="pointA"/>
@@ -25,7 +25,7 @@
          <property name="y"  value="0"></property>
    </bean>
 
-
-<alias name="triangle" alias="triangle-alias"/>
+<bean id="customBeanPostProcessor"
+               class="com.SpringDemo.DisplayNameBeanPostProcessor" />
 
 </beans>

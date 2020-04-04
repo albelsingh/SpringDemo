@@ -10,7 +10,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 
-public class Triangle implements InitializingBean,DisposableBean
+public class Triangle
 {
 
 	private Point pointA;
@@ -54,22 +54,5 @@ public class Triangle implements InitializingBean,DisposableBean
 			
 		}
 
-//This method gets call when Bean has finished initialization
-	public void afterPropertiesSet() throws Exception {
-		// TODO Auto-generated method stub
-		System.out.println("InitializingBean init method called for Triangle!!");
-	}
 
-// This method gets call before destroy the bean
-	public void destroy() throws Exception {
-		// TODO Auto-generated method stub
-		System.out.println("DisposableBean destroy method called for Triangle!!");
-	} 
-	
-	 public void  myInit() {
-		 System.out.println("My myInit method called for Triangle!!"); 
-	 }
-     public void cleanUp(){
-	   System.out.println("My Cleanup method called for Triangle!!");
-    }
 }

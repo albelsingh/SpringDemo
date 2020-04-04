@@ -19,7 +19,7 @@ public class DrawingApp {
 		//this is the adding for git version changes
 		
 		AbstractApplicationContext context = new ClassPathXmlApplicationContext("resource/spring.xml"); //Itializing application context or start container.
-		context.registerShutdownHook();
+		//context.registerShutdownHook();
 		Triangle  triangle =(Triangle)context.getBean("triangle");
 		triangle.draw();
 		System.out.println("output = "+context.getBeanDefinitionCount());
