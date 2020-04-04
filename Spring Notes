@@ -1406,4 +1406,110 @@ public class DrawingApp {
 }
 //
 ------------------------------------
+BeanFactoryPostProcessor:
+BeanFactoryPostProcessor works on the bean definitions or configuration meta data of the bean before beans are actually created. Spring provides multiple BeanFactoryPostProcessor beans, so it invoked to resolve run time dependencies such reading value from external property files. In Spring application, BeanFactoryPostProcessor can modify the definition of any bean.
+
+
+Example:
+Triangle,Point and DrawingApp are same previous one.
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN"
+		  "http://www.springframework.org/dtd/spring-beans-2.0.dtd">	
+<beans >
+
+<bean id="triangle" class="com.SpringDemo.Triangle" >
+    <property name="pointA" ref="pointA"/>
+    <property name="pointB" ref="pointB"/>
+    <property name="pointC" ref="pointC"/>
+       
+</bean>
+
+
+   <bean id="pointA" class="com.SpringDemo.Point"> 
+         <property name="x"  value="0"></property>
+         <property name="y"  value="0"></property>
+   </bean>
+
+   <bean id="pointB" class="com.SpringDemo.Point">                              <!-- Inner Beans defination -->
+         <property name="x"  value="-20"></property>
+         <property name="y"  value="0"></property>
+   </bean>
+   
+   <bean id="pointC" class="com.SpringDemo.Point"> 
+         <property name="x"  value="20"></property>
+         <property name="y"  value="0"></property>
+   </bean>
+
+<bean class="com.SpringDemo.MyBeanFactoryPP" />
+
+</beans>
+//
+package com.SpringDemo;
+
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+
+public class MyBeanFactoryPP implements BeanFactoryPostProcessor{
+
+	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+		 System.out.println("Called BeanFactoryPostProcessor " );
+		
+	}
+
+}
+
+BeanFactoryPostProcessor with properties file:
+DrawingApp ,point and Triangle class are same.
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN"
+		  "http://www.springframework.org/dtd/spring-beans-2.0.dtd">	
+<beans >
+
+<bean id="triangle" class="com.SpringDemo.Triangle" >
+    <property name="pointA" ref="pointA"/>
+    <property name="pointB" ref="pointB"/>
+    <property name="pointC" ref="pointC"/>
+       
+</bean>
+
+
+   <bean id="pointA" class="com.SpringDemo.Point"> 
+         <property name="x"  value="${pointA.pointX}"></property>
+         <property name="y"  value="${pointA.pointY}"></property>
+   </bean>
+
+   <bean id="pointB" class="com.SpringDemo.Point">                              <!-- Inner Beans defination -->
+         <property name="x"  value="${pointB.pointX}"></property>
+         <property name="y"  value="${pointB.pointY}"></property>
+   </bean>
+   
+   <bean id="pointC" class="com.SpringDemo.Point"> 
+         <property name="x"  value="${pointC.pointX}"></property>
+         <property name="y"  value="${pointC.pointY}"></property>
+   </bean>
+
+<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" >
+<property name="locations" value="resource/pointsconfig.properties"/>
+</bean>
+
+</beans>
+//
+pointsconfig.properties :-
+
+pointA.pointX=0
+pointA.pointY=0
+pointB.pointX=-20
+pointB.pointY=0
+pointC.pointX=0
+pointC.pointY=20
+-----------
+The differences about BeanFactoryPostProcessor and BeanPostProcessor:
+
+1. A bean implementing BeanFactoryPostProcessor is called when all bean definitions will have been loaded, but no beans will have been instantiated yet. This allows for overriding or adding properties even to eager-initializing beans. This will let you have access to all the beans that you have defined in XML or that are annotated (scanned via component-scan).
+
+2. A bean implementing BeanPostProcessor operate on bean (or object) instances which means that when the Spring IoC container instantiates a bean instance then BeanPostProcessor interfaces do their work.
+
+3. BeanFactoryPostProcessor implementations are "called" during startup of the Spring context after all bean definitions will have been loaded while BeanPostProcessor are "called" when the Spring IoC container instantiates a bean (i.e. during the startup for all the singleton and on demand for the proptotypes one)
+--------------------------------------------------------------------------------------------------------------
 
