@@ -8,7 +8,10 @@
     <property name="pointC" ref="pointC"/>
        
 </bean>
-
+<bean id="circle" class="com.SpringDemo.Circle" >
+    <property name="center" ref="pointA"/>
+   
+</bean>
 
    <bean id="pointA" class="com.SpringDemo.Point"> 
          <property name="x"  value="${pointA.pointX}"></property>

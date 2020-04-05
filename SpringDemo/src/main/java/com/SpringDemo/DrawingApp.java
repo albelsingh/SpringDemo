@@ -14,17 +14,10 @@ public class DrawingApp {
 
 
 	public static void main(String[] args) { 
-		//Resource r=new ClassPathResource("resource/spring.xml");
-        //BeanFactory factory=new XmlBeanFactory(r);
-		//this is the adding for git version changes
 		
 		AbstractApplicationContext context = new ClassPathXmlApplicationContext("resource/spring.xml"); //Itializing application context or start container.
-		//context.registerShutdownHook();
-		Triangle  triangle =(Triangle)context.getBean("triangle");
-		triangle.draw();
-		System.out.println("output = "+context.getBeanDefinitionCount());
-		
-        
+		Shape  shape =(Shape)context.getBean("triangle");
+		shape.draw();    
 	}
 
 }

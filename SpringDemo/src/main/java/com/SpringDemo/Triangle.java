@@ -10,7 +10,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 
-public class Triangle
+public class Triangle implements Shape
 {
 
 	private Point pointA;
@@ -47,7 +47,7 @@ public class Triangle
 	}
 
 	public void draw() {
-		
+		System.out.println("Drawing Triangle ");
 		System.out.println("point A = ("+ getPointA().getX()+" , "+ getPointA().getY()+")");
 		System.out.println("point B = ("+ getPointB().getX()+" , "+ getPointB().getY()+")");
 		System.out.println("point C = ("+ getPointC().getX()+" , "+ getPointC().getY()+")");

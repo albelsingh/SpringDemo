@@ -1512,4 +1512,160 @@ The differences about BeanFactoryPostProcessor and BeanPostProcessor:
 
 3. BeanFactoryPostProcessor implementations are "called" during startup of the Spring context after all bean definitions will have been loaded while BeanPostProcessor are "called" when the Spring IoC container instantiates a bean (i.e. during the startup for all the singleton and on demand for the proptotypes one)
 --------------------------------------------------------------------------------------------------------------
+Coding to Interface in DI:
+
+Point and Properties are same.
+Example:
+package com.SpringDemo;
+
+public interface Shape {
+	public void draw();
+
+}
+//
+
+package com.SpringDemo;
+
+import java.util.List;
+
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanNameAware;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Bean;
+
+public class Triangle implements Shape
+{
+
+	private Point pointA;
+	private Point pointB;
+	private Point pointC;
+	
+	public Point getPointA() {
+		return pointA;
+	}
+
+
+	public void setPointA(Point pointA) {
+		this.pointA = pointA;
+	}
+
+
+	public Point getPointB() {
+		return pointB;
+	}
+
+
+	public void setPointB(Point pointB) {
+		this.pointB = pointB;
+	}
+
+
+	public Point getPointC() {
+		return pointC;
+	}
+
+
+	public void setPointC(Point pointC) {
+		this.pointC = pointC;
+	}
+
+	public void draw() {
+		System.out.println("Drawing Triangle ");
+		System.out.println("point A = ("+ getPointA().getX()+" , "+ getPointA().getY()+")");
+		System.out.println("point B = ("+ getPointB().getX()+" , "+ getPointB().getY()+")");
+		System.out.println("point C = ("+ getPointC().getX()+" , "+ getPointC().getY()+")");
+			
+		}
+
+
+}
+//
+
+package com.SpringDemo;
+
+public class Circle implements Shape{
+     
+	private Point center;
+	
+	public void draw() {
+		System.out.println("Drawing Circle ");
+		System.out.println("Point are = "+center.getX()+","+center.getY());
+		
+	}
+
+	public Point getCenter() {
+		return center;
+	}
+
+	public void setCenter(Point center) {
+		this.center = center;
+	}
+	
+
+}
+//
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN"
+		  "http://www.springframework.org/dtd/spring-beans-2.0.dtd">	
+<beans >
+
+<bean id="triangle" class="com.SpringDemo.Triangle" >
+    <property name="pointA" ref="pointA"/>
+    <property name="pointB" ref="pointB"/>
+    <property name="pointC" ref="pointC"/>
+       
+</bean>
+<bean id="circle" class="com.SpringDemo.Circle" >
+    <property name="center" ref="pointA"/>
+   
+</bean>
+
+   <bean id="pointA" class="com.SpringDemo.Point"> 
+         <property name="x"  value="${pointA.pointX}"></property>
+         <property name="y"  value="${pointA.pointY}"></property>
+   </bean>
+
+   <bean id="pointB" class="com.SpringDemo.Point">                              <!-- Inner Beans defination -->
+         <property name="x"  value="${pointB.pointX}"></property>
+         <property name="y"  value="${pointB.pointY}"></property>
+   </bean>
+   
+   <bean id="pointC" class="com.SpringDemo.Point"> 
+         <property name="x"  value="${pointC.pointX}"></property>
+         <property name="y"  value="${pointC.pointY}"></property>
+   </bean>
+
+<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" >
+<property name="locations" value="resource/pointsconfig.properties"/>
+</bean>
+
+</beans>
+//
+package com.SpringDemo;
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+
+public class DrawingApp {
+
+
+	public static void main(String[] args) { 
+		
+		AbstractApplicationContext context = new ClassPathXmlApplicationContext("resource/spring.xml"); //Itializing application context or start container.
+		Shape  shape =(Shape)context.getBean("triangle");
+		shape.draw();    
+	}
+
+}
+------------------------------------------------------------------------------------------------
 
