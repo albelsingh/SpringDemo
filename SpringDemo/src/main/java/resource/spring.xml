@@ -9,7 +9,7 @@
        
 </bean>
 <bean id="circle" class="com.SpringDemo.Circle" >
-    <property name="center" ref="pointA"/>
+  <!--  <property name="center" ref="pointA"/> -->
    
 </bean>
 
@@ -31,5 +31,7 @@
 <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" >
 <property name="locations" value="resource/pointsconfig.properties"/>
 </bean>
+
+<bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor" />
 
 </beans>

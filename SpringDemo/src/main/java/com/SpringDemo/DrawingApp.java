@@ -16,7 +16,7 @@ public class DrawingApp {
 	public static void main(String[] args) { 
 		
 		AbstractApplicationContext context = new ClassPathXmlApplicationContext("resource/spring.xml"); //Itializing application context or start container.
-		Shape  shape =(Shape)context.getBean("triangle");
+		Shape  shape =(Shape)context.getBean("circle");
 		shape.draw();    
 	}
 
