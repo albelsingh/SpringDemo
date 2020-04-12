@@ -18,7 +18,7 @@
        
 </bean>
  -->
-<bean id="circle" class="com.SpringDemo.Circle" > </bean>
+
 
    <bean id="pointA" class="com.SpringDemo.Point">  
          <qualifier value="circleRelated" />    
@@ -48,5 +48,4 @@
      </property>
     </bean>
 
-<!-- <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/> -->
 </beans>
