@@ -8,16 +8,17 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
+
 
 public class DrawingApp {
 
-
 	public static void main(String[] args) { 
 		
-		AbstractApplicationContext context = new ClassPathXmlApplicationContext("resource/spring.xml"); //Itializing application context or start container.
+		ApplicationContext context = new ClassPathXmlApplicationContext("resource/spring.xml"); //Itializing application context or start container.
 		Shape  shape =(Shape)context.getBean("circle");
-		shape.draw();    
+        shape.draw(); 
+        System.out.println(context.getMessage("greeting", null, "greeting not found", null));
+       
 	}
 
 }

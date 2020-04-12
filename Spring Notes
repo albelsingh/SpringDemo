@@ -1731,7 +1731,355 @@ public class Circle implements Shape{
 <property name="locations" value="resource/pointsconfig.properties"/>
 </bean>
 
-<bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor" />
+<bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor" /> <!-- This method checks for all required annotation if it is not there then Spring through error -->
 
 </beans>
+-------------------------------------------------------------------
+@Autowired :
+
+It checks for type in xml file if there is only one bean of the same type then it autowired without any problem.
+If there are many beans of the same type in the xml file then it looks for name if any matches it autowire that bean.
+If name doesn't matches then it looks for qualifier in the bean which you have defined in the class.
+
+Example:
+Othser class same as above.
+(1)
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN"
+		  "http://www.springframework.org/dtd/spring-beans-2.0.dtd">	
+<beans >
+
+<!-- <bean id="triangle" class="com.SpringDemo.Triangle" >
+    <property name="pointA" ref="pointA"/>
+    <property name="pointB" ref="pointB"/>
+    <property name="pointC" ref="pointC"/>
+       
+</bean>
+ -->
+
+   <bean id="pointA" class="com.SpringDemo.Point"> 
+         <property name="x"  value="${pointA.pointX}"></property>
+         <property name="y"  value="${pointA.pointY}"></property>
+   </bean>
+
+<!--    <bean id="pointB" class="com.SpringDemo.Point">                            
+         <property name="x"  value="${pointB.pointX}"></property>
+         <property name="y"  value="${pointB.pointY}"></property>
+   </bean>
+   
+   <bean id="pointC" class="com.SpringDemo.Point"> 
+         <property name="x"  value="${pointC.pointX}"></property>
+         <property name="y"  value="${pointC.pointY}"></property>
+   </bean>
+ -->
+<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" >
+<property name="locations" value="resource/pointsconfig.properties"/>
+</bean>
+<bean id="circle" class="com.SpringDemo.Circle" >
+  <!--  <property name="center" ref="pointA"/> -->
+</bean>
+<!-- <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor" /> -->
+<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+</beans>
+//
+package com.SpringDemo;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
+
+public class Circle implements Shape{
+     
+	private Point center;
+	
+	public void draw() {
+		System.out.println("Drawing Circle ");
+		System.out.println("Point are = "+center.getX()+","+center.getY());
+		
+	}
+
+	public Point getCenter() {
+		return center;
+	}
+    @Autowired
+	public void setCenter(Point center) {
+		this.center = center;
+	}
+	
+
+}
+
+Case (2) Multiple Type:
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN"
+		  "http://www.springframework.org/dtd/spring-beans-2.0.dtd">	
+<beans >
+
+<!-- <bean id="triangle" class="com.SpringDemo.Triangle" >
+    <property name="pointA" ref="pointA"/>
+    <property name="pointB" ref="pointB"/>
+    <property name="pointC" ref="pointC"/>
+       
+</bean>
+ -->
+
+   <bean id="pointA" class="com.SpringDemo.Point"> 
+         <property name="x"  value="${pointA.pointX}"></property>
+         <property name="y"  value="${pointA.pointY}"></property>
+   </bean>
+
+   <bean id="pointB" class="com.SpringDemo.Point">                            
+         <property name="x"  value="${pointB.pointX}"></property>
+         <property name="y"  value="${pointB.pointY}"></property>
+   </bean>
+   
+   <bean id="pointC" class="com.SpringDemo.Point"> 
+         <property name="x"  value="${pointC.pointX}"></property>
+         <property name="y"  value="${pointC.pointY}"></property>
+   </bean>
+
+<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" >
+<property name="locations" value="resource/pointsconfig.properties"/>
+</bean>
+<bean id="circle" class="com.SpringDemo.Circle" >
+  <!--  <property name="center" ref="pointA"/> -->
+</bean>
+<!-- <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor" /> -->
+<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+</beans>
+
+Case (3)  Using Qualifier:
+
+XML:
+
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!-- <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans> -->
+<beans xmlns = "http://www.springframework.org/schema/beans"
+   xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation = "http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+   xmlns:context = "http://www.springframework.org/schema/context">
+  
+
+<!-- <bean id="triangle" class="com.SpringDemo.Triangle" >
+    <property name="pointA" ref="pointA"/>
+    <property name="pointB" ref="pointB"/>
+    <property name="pointC" ref="pointC"/>
+       
+</bean>
+ -->
+
+   <bean id="pointA" class="com.SpringDemo.Point"> 
+         <qualifier value="circleRelated" />
+         <property name="x"  value="${pointA.pointX}"></property>
+         <property name="y"  value="${pointA.pointY}"></property>
+   </bean>
+
+   <bean id="pointB" class="com.SpringDemo.Point">                            
+         <property name="x"  value="${pointB.pointX}"></property>
+         <property name="y"  value="${pointB.pointY}"></property>
+   </bean>
+   
+   <bean id="pointC" class="com.SpringDemo.Point"> 
+         <property name="x"  value="${pointC.pointX}"></property>
+         <property name="y"  value="${pointC.pointY}"></property>
+   </bean>
+
+<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" >
+<property name="locations" value="resource/pointsconfig.properties"/>
+</bean>
+<bean id="circle" class="com.SpringDemo.Circle" >
+  <!--  <property name="center" ref="pointA"/> -->
+</bean>
+<!-- <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor" /> -->
+<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+</beans>
+//
+package com.SpringDemo;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Required;
+
+public class Circle implements Shape{
+     
+	private Point center;
+	
+	public void draw() {
+		System.out.println("Drawing Circle ");
+		System.out.println("Point are = "+center.getX()+","+center.getY());
+		
+	}
+
+	public Point getCenter() {
+		return center;
+	}
+    @Autowired
+    @Qualifier("circleRelated")
+	public void setCenter(Point center) {
+		this.center = center;
+	}
+	
+
+}
+Everything are same as previous.
+-----------------------------------------------------------------------
+20-practical is pending
+@Resource Annotation: 
+Its going to inject bean by name. 
+Example: @Resource(name="pointC")
+
+@PostConstruct : it runs after bean has initialized. like - call before initialization method.
+@PreDestroy : It runs before bean being destroy. like - call before destroy method.
+
+----------------------
+21-practical is pending
+@Component : - By using this bean no need to create bean in xml for java class just write this annotation before java class it gonna register java class as bean with container and we use to scan this annotation 
+
+<context:component-scan base-package="com.SpringDemo" />
+
+@Service: 
+
+Spring @Service annotation is a specialization of @Component annotation. Spring Service annotation can be applied only to classes. It is used to mark the class as a service provider.
+
+Spring @Service annotation is used with classes that provide some business functionalities. Spring context will autodetect these classes when annotation-based configuration and classpath scanning is used.
+
+@Repository :
+Spring @Repository annotation is used to indicate that the class provides the mechanism for storage, retrieval, search, update and delete operation on objects.
+
+Spring @Repository Annotation
+Spring Repository annotation is a specialization of @Component annotation, so Spring Repository classes are autodetected by spring framework through classpath scanning.
+
+Spring Repository is very close to DAO pattern where DAO classes are responsible for providing CRUD operations on database tables. However, if you are using Spring Data for managing database operations, then you should use Spring Data Repository interface.
+
+@Controller: The @Controller annotation is used to mark any java class as a controller class.
+-------------------------------------------------
+MessageSource: reading text from properties file.
+
+<!-- <?xml version = "1.0" encoding = "UTF-8"?> -->
+<!-- <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans> -->
+<beans xmlns = "http://www.springframework.org/schema/beans"
+   xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation = "http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+                         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd"
+   xmlns:context = "http://www.springframework.org/schema/context">
+
+<context:annotation-config/>
+
+<context:component-scan base-package="com.SpringDemo" />
+
+<!-- <bean id="triangle" class="com.SpringDemo.Triangle" >
+    <property name="pointA" ref="pointA"/>
+    <property name="pointB" ref="pointB"/>
+    <property name="pointC" ref="pointC"/>
+       
+</bean>
+ -->
+<bean id="circle" class="com.SpringDemo.Circle" > </bean>
+
+   <bean id="pointA" class="com.SpringDemo.Point">  
+         <qualifier value="circleRelated" />    
+         <property name="x"  value="${pointA.pointX}"></property>
+         <property name="y"  value="${pointA.pointY}"></property>
+   </bean>
+
+   <bean id="pointB" class="com.SpringDemo.Point">                            
+         <property name="x"  value="${pointB.pointX}"></property>
+         <property name="y"  value="${pointB.pointY}"></property>
+   </bean>
+   
+   <bean id="pointC" class="com.SpringDemo.Point"> 
+         <property name="x"  value="${pointC.pointX}"></property>
+         <property name="y"  value="${pointC.pointY}"></property>
+   </bean>
+
+<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" >
+<property name="locations" value="resource/pointsconfig.properties"/>
+</bean>
+    <bean id="messageSorce" class="org.springframework.context.support.ResourceBundleMessageSource">
+   
+     <property name="basenames">
+     <list>
+     <value>mymessage</value>
+     </list>
+     </property>
+    </bean>
+
+<!-- <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/> -->
+</beans>
+//
+package com.SpringDemo;
+
+import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Service;
+
+
+public class Circle implements Shape{
+     
+	private Point center;
+	@Autowired
+	private MessageSource messageSource;
+	
+	public MessageSource getMessageSource() {
+		return messageSource;
+	}
+
+	public void setMessageSource(MessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
+
+	public void draw() {
+		System.out.println("Drawing Circle ");
+		System.out.println("Point are = "+center.getX()+","+center.getY());
+		/*System.out.println(this.messageSource.getMessage("drawing.point", new Object[] {center.getX(), center.getY()} , "Default Point ", null));
+		System.out.println(this.messageSource.getMessage("greeting", null, "Default Hello Albel", null));
+		*/
+	}
+
+	public Point getCenter() {
+		return center;
+	}
+	@Autowired
+	@Qualifier("circleRelated")
+	/*@Resource(name="pointC")*/
+	public void setCenter(Point center) {
+		this.center = center;
+	}
+	
+	
+
+}
+//
+package com.SpringDemo;
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
+
+
+public class DrawingApp {
+
+	public static void main(String[] args) { 
+		
+		ApplicationContext context = new ClassPathXmlApplicationContext("resource/spring.xml"); //Itializing application context or start container.
+		Shape  shape =(Shape)context.getBean("circle");
+        shape.draw(); 
+        System.out.println(context.getMessage("greeting", null, "greeting not found", null));
+       
+	}
+
+}
+//
+greeting=HelloAlbel
+drawing.circle=Drawing Circle!
+drawing.point=Circle point is: [{0}, {1}]
 -------------------------------------------------------------------
